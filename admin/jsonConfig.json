@@ -1,133 +1,262 @@
 {
   "type": "tabs",
+  "i18n": true,
   "items": {
+
     "tab_connection": {
       "type": "tab",
-      "label": "Verbindung",
+      "label": "🔌 Verbindung",
       "items": {
-        "header_connection": {
+
+        "header_wp": {
           "type": "header",
-          "text": "Wärmepumpen-Verbindung",
+          "text": "Wärmepumpen-Verbindung (Luxtronik 2.1)",
           "size": 4
         },
         "hint_ip": {
           "type": "staticText",
-          "text": "Die IP-Adresse finden Sie am Display der Wärmepumpe unter: SERVICE → Systemsteuerung → IP-Adresse",
-          "style": {"color": "#888", "fontSize": "12px", "marginBottom": "16px"}
+          "text": "💡 IP-Adresse am Display ablesen: SERVICE → Systemsteuerung → IP-Adresse",
+          "style": { "color": "#1890ff", "backgroundColor": "#e6f7ff", "padding": "8px 12px", "borderRadius": "4px", "marginBottom": "16px", "display": "block", "border": "1px solid #91d5ff" }
         },
         "host": {
           "type": "text",
           "label": "IP-Adresse der Wärmepumpe",
           "placeholder": "z.B. 192.168.1.100",
-          "help": "IP-Adresse am Display ablesen: SERVICE → Systemsteuerung → IP-Adresse",
-          "sm": 12,
-          "md": 6,
+          "help": "Lokale IP-Adresse der Luxtronik Steuerung im Netzwerk",
+          "sm": 12, "md": 6,
           "validator": "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",
           "validatorErrorText": "Bitte eine gültige IP-Adresse eingeben (z.B. 192.168.1.100)",
           "required": true
         },
         "port": {
           "type": "number",
-          "label": "Port (WebSocket)",
+          "label": "WebSocket Port",
           "placeholder": "8214",
-          "help": "Standard-Port der Luxtronik 2.1: 8214",
-          "min": 1,
-          "max": 65535,
-          "sm": 12,
-          "md": 3
+          "help": "Standard: 8214 (nicht ändern ausser bei abweichender Konfiguration)",
+          "min": 1, "max": 65535,
+          "sm": 12, "md": 3
         },
         "password": {
-          "type": "text",
+          "type": "password",
           "label": "Passwort",
           "placeholder": "999999",
-          "help": "Standard-Passwort: 999999",
-          "sm": 12,
-          "md": 3
+          "help": "Standard Benutzer-Passwort: 999999",
+          "sm": 12, "md": 3
         },
-        "divider1": {
-          "type": "divider"
-        },
+
+        "divider_poll": { "type": "divider" },
+
         "header_poll": {
           "type": "header",
-          "text": "Abfrage-Einstellungen",
+          "text": "Abfrage & Reconnect",
           "size": 4
         },
         "pollInterval": {
           "type": "number",
           "label": "Abfrageintervall (Sekunden)",
           "help": "Wie oft alle Werte abgefragt werden. Empfohlen: 30 Sekunden",
-          "min": 10,
-          "max": 3600,
+          "min": 10, "max": 3600,
           "placeholder": "30",
-          "sm": 12,
-          "md": 4
+          "sm": 12, "md": 4
         },
         "reconnectInterval": {
           "type": "number",
           "label": "Reconnect-Intervall (Sekunden)",
           "help": "Wartezeit bei Verbindungsabbruch bis zum nächsten Versuch",
-          "min": 10,
-          "max": 600,
+          "min": 10, "max": 600,
           "placeholder": "60",
-          "sm": 12,
-          "md": 4
+          "sm": 12, "md": 4
         }
       }
     },
+
+    "tab_loxone": {
+      "type": "tab",
+      "label": "🏠 Loxone Integration",
+      "items": {
+
+        "header_loxone": {
+          "type": "header",
+          "text": "Loxone Miniserver Verbindung via MQTT",
+          "size": 4
+        },
+        "hint_loxone": {
+          "type": "staticText",
+          "text": "📡 Die Wärmepumpen-Daten werden via MQTT an den Loxone Miniserver übertragen. Dazu muss der ioBroker MQTT Adapter installiert und als Broker konfiguriert sein.",
+          "style": { "color": "#389e0d", "backgroundColor": "#f6ffed", "padding": "8px 12px", "borderRadius": "4px", "marginBottom": "16px", "display": "block", "border": "1px solid #b7eb8f" }
+        },
+        "loxoneEnabled": {
+          "type": "checkbox",
+          "label": "Loxone MQTT Integration aktivieren",
+          "help": "Werte automatisch an Loxone Miniserver via MQTT senden",
+          "sm": 12
+        },
+        "loxoneMqttHost": {
+          "type": "text",
+          "label": "MQTT Broker IP (ioBroker Server)",
+          "placeholder": "z.B. 192.168.1.10",
+          "help": "IP-Adresse des ioBroker Servers wo der MQTT Broker läuft",
+          "sm": 12, "md": 6,
+          "hidden": "!data.loxoneEnabled"
+        },
+        "loxoneMqttPort": {
+          "type": "number",
+          "label": "MQTT Port",
+          "placeholder": "1883",
+          "help": "Standard MQTT Port: 1883",
+          "min": 1, "max": 65535,
+          "sm": 12, "md": 3,
+          "hidden": "!data.loxoneEnabled"
+        },
+        "loxoneMqttUser": {
+          "type": "text",
+          "label": "MQTT Benutzername",
+          "placeholder": "optional",
+          "sm": 12, "md": 3,
+          "hidden": "!data.loxoneEnabled"
+        },
+        "loxoneMqttPassword": {
+          "type": "password",
+          "label": "MQTT Passwort",
+          "placeholder": "optional",
+          "sm": 12, "md": 3,
+          "hidden": "!data.loxoneEnabled"
+        },
+        "loxoneMqttTopic": {
+          "type": "text",
+          "label": "MQTT Topic Prefix",
+          "placeholder": "waermepumpe",
+          "help": "Prefix für alle MQTT Topics, z.B. 'waermepumpe' → waermepumpe/temperaturen/aussentemperatur",
+          "sm": 12, "md": 6,
+          "hidden": "!data.loxoneEnabled"
+        },
+
+        "divider_lox2": { "type": "divider", "hidden": "!data.loxoneEnabled" },
+
+        "header_topics": {
+          "type": "header",
+          "text": "Loxone Config — Virtuelle Eingänge (Beispiele)",
+          "size": 4,
+          "hidden": "!data.loxoneEnabled"
+        },
+        "hint_topics": {
+          "type": "staticText",
+          "text": "In Loxone Config diese Topics als Virtuelle Eingänge (MQTT) anlegen:\n• waermepumpe/temperaturen/aussentemperatur\n• waermepumpe/temperaturen/vorlauftemperatur\n• waermepumpe/temperaturen/ruecklauftemperatur\n• waermepumpe/temperaturen/warmwasser_ist\n• waermepumpe/betriebsstunden/verdichter\n• waermepumpe/anlagenstatus/betriebsstatus\n• waermepumpe/energiemonitor/leistungsaufnahme",
+          "style": { "fontFamily": "monospace", "fontSize": "12px", "backgroundColor": "#1a1a2e", "color": "#00d4ff", "padding": "12px", "borderRadius": "4px", "whiteSpace": "pre", "display": "block" },
+          "hidden": "!data.loxoneEnabled"
+        }
+      }
+    },
+
+    "tab_data": {
+      "type": "tab",
+      "label": "📊 Datenpunkte",
+      "items": {
+        "header_data": {
+          "type": "header",
+          "text": "Welche Datenpunkte sollen abgefragt werden?",
+          "size": 4
+        },
+        "hint_data": {
+          "type": "staticText",
+          "text": "ℹ️ Alle aktivierten Bereiche werden automatisch als ioBroker-States unter luxtronik2ws.0.* angelegt.",
+          "style": { "color": "#888", "marginBottom": "12px", "display": "block" }
+        },
+        "fetchTemperaturen": {
+          "type": "checkbox",
+          "label": "🌡️ Temperaturen (Aussen, Vorlauf, Rücklauf, Warmwasser...)",
+          "def": true,
+          "sm": 12
+        },
+        "fetchEingaenge": {
+          "type": "checkbox",
+          "label": "📥 Eingänge (Sensoren)",
+          "def": true,
+          "sm": 12
+        },
+        "fetchAusgaenge": {
+          "type": "checkbox",
+          "label": "📤 Ausgänge (Pumpen, Verdichter...)",
+          "def": true,
+          "sm": 12
+        },
+        "fetchBetriebsstunden": {
+          "type": "checkbox",
+          "label": "🕐 Betriebsstunden (Verdichter, Heizung, Warmwasser...)",
+          "def": true,
+          "sm": 12
+        },
+        "fetchAnlagenstatus": {
+          "type": "checkbox",
+          "label": "📊 Anlagenstatus (Betriebsstatus, Meldungen...)",
+          "def": true,
+          "sm": 12
+        },
+        "fetchEnergiemonitor": {
+          "type": "checkbox",
+          "label": "⚡ Energiemonitor (Wärmemenge, Leistungsaufnahme, COP...)",
+          "def": true,
+          "sm": 12
+        },
+        "fetchAblaufzeiten": {
+          "type": "checkbox",
+          "label": "⏱️ Ablaufzeiten",
+          "def": false,
+          "sm": 12
+        },
+        "fetchFehlerspeicher": {
+          "type": "checkbox",
+          "label": "⚠️ Fehlerspeicher & Abschaltungen",
+          "def": false,
+          "sm": 12
+        },
+        "fetchSHI": {
+          "type": "checkbox",
+          "label": "🏠 Smart Home Interface (GLT, SHI Modbus Werte)",
+          "def": false,
+          "sm": 12
+        }
+      }
+    },
+
     "tab_info": {
       "type": "tab",
-      "label": "Info & Hilfe",
+      "label": "ℹ️ Info & Hilfe",
       "items": {
         "header_info": {
           "type": "header",
-          "text": "Luxtronik 2.1 WebSocket Adapter",
+          "text": "Luxtronik 2.1 WebSocket Adapter v0.1.0",
           "size": 3
         },
-        "info_text": {
+        "info_desc": {
           "type": "staticText",
-          "text": "Dieser Adapter verbindet ioBroker mit Alpha Innotec / Luxtronik 2.1 Wärmepumpen via WebSocket-Protokoll (Lux_WS). Unterstützt Firmware V3.81 und neuer.",
-          "style": {"marginBottom": "16px"}
+          "text": "Verbindet ioBroker mit Alpha Innotec / Luxtronik 2.1 Wärmepumpen via WebSocket (Lux_WS Protokoll). Unterstützt Firmware V3.81 und neuer. Ersatz für den nicht mehr funktionierenden UncleSamSwiss Adapter.",
+          "style": { "marginBottom": "16px", "display": "block" }
         },
-        "header_requirements": {
+
+        "divider_req": { "type": "divider" },
+        "header_req": {
           "type": "header",
-          "text": "Voraussetzungen",
+          "text": "Voraussetzungen an der Wärmepumpe",
           "size": 4
         },
-        "req1": {
-          "type": "staticText",
-          "text": "✅ LAN-Kabel an der Wärmepumpe angeschlossen"
-        },
-        "req2": {
-          "type": "staticText",
-          "text": "✅ Webserver aktiviert: SERVICE → Systemsteuerung → Webserver → Ein"
-        },
-        "req3": {
-          "type": "staticText",
-          "text": "✅ Fernsteuerung aktiviert: SERVICE → Systemsteuerung → Fernsteuerung → Ein"
-        },
-        "req4": {
-          "type": "staticText",
-          "text": "✅ DHCP Client aktiviert: SERVICE → Systemsteuerung → DHCP Client → Ein"
-        },
-        "req5": {
-          "type": "staticText",
-          "text": "✅ IP-Adresse ablesen: SERVICE → Systemsteuerung → IP-Adresse"
-        },
-        "divider2": {
-          "type": "divider"
-        },
-        "header_passwords": {
+        "req1": { "type": "staticText", "text": "✅  LAN-Kabel angeschlossen (RJ-45, Kat. 6)" },
+        "req2": { "type": "staticText", "text": "✅  Webserver aktiviert: SERVICE → Systemsteuerung → Webserver → Ein" },
+        "req3": { "type": "staticText", "text": "✅  Fernsteuerung aktiviert: SERVICE → Systemsteuerung → Fernsteuerung → Ein" },
+        "req4": { "type": "staticText", "text": "✅  DHCP Client: SERVICE → Systemsteuerung → DHCP Client → Ein" },
+        "req5": { "type": "staticText", "text": "✅  IP-Adresse ablesen: SERVICE → Systemsteuerung → IP-Adresse" },
+
+        "divider_pw": { "type": "divider" },
+        "header_pw": {
           "type": "header",
           "text": "Standard-Zugangsdaten",
           "size": 4
         },
-        "pw_text": {
-          "type": "staticText",
-          "text": "Benutzer-Passwort: 999999 | Service-Passwort: 0000000 | Installateur-Passwort: 1111111"
-        },
-        "divider3": {
-          "type": "divider"
-        },
+        "pw1": { "type": "staticText", "text": "🔑  Benutzer-Passwort: 999999" },
+        "pw2": { "type": "staticText", "text": "🔑  Service-Passwort: 0000000" },
+        "pw3": { "type": "staticText", "text": "🔑  Installateur-Passwort: 1111111" },
+
+        "divider_links": { "type": "divider" },
         "header_links": {
           "type": "header",
           "text": "Links",
@@ -136,13 +265,19 @@
         "link_github": {
           "type": "staticLink",
           "href": "https://github.com/civiale/iobroker.luxtronik2ws",
-          "text": "GitHub Repository",
+          "text": "📦 GitHub Repository",
           "button": true
         },
         "link_readme": {
           "type": "staticLink",
           "href": "https://github.com/civiale/iobroker.luxtronik2ws/blob/main/README.md",
-          "text": "Dokumentation (README)",
+          "text": "📖 Dokumentation (README)",
+          "button": true
+        },
+        "link_issues": {
+          "type": "staticLink",
+          "href": "https://github.com/civiale/iobroker.luxtronik2ws/issues",
+          "text": "🐛 Bug melden",
           "button": true
         }
       }
