@@ -10,15 +10,26 @@
     },
     "title": "Luxtronik 2.1 WebSocket",
     "titleLang": {
-      "en": "Luxtronik 2.1 WebSocket Adapter",
-      "de": "Luxtronik 2.1 WebSocket Adapter"
+      "en": "Luxtronik 2.1 WebSocket",
+      "de": "Luxtronik 2.1 WebSocket"
     },
     "desc": {
-      "en": "Connects to Alpha Innotec / Luxtronik 2.1 heat pumps via WebSocket (Firmware >= v3.81)",
-      "de": "Verbindet sich mit Alpha Innotec / Luxtronik 2.1 Wärmepumpen via WebSocket (Firmware >= v3.81)"
+      "en": "Connects ioBroker to Alpha Innotec / Luxtronik 2.1 heat pumps via WebSocket protocol (Lux_WS). Supports firmware V3.81 and newer. Automatically reads all available data points such as temperatures, operating hours, energy monitor and system status.",
+      "de": "Verbindet ioBroker mit Alpha Innotec / Luxtronik 2.1 Wärmepumpen via WebSocket-Protokoll (Lux_WS). Unterstützt Firmware V3.81 und neuer. Liest automatisch alle verfügbaren Datenpunkte wie Temperaturen, Betriebsstunden, Energiemonitor und Anlagenstatus."
     },
-    "authors": ["alessandrocivi"],
-    "keywords": ["luxtronik", "alpha innotec", "wärmepumpe", "heatpump"],
+    "authors": [
+      "alessandrocivi <github.com/civiale>"
+    ],
+    "keywords": [
+      "luxtronik",
+      "luxtronik2",
+      "alpha innotec",
+      "wärmepumpe",
+      "heatpump",
+      "websocket",
+      "novelan",
+      "heating"
+    ],
     "license": "MIT",
     "type": "climate-control",
     "icon": "admin/luxtronik.png",
@@ -32,7 +43,12 @@
     },
     "connectionType": "local",
     "dataSource": "push",
-    "tier": 2
+    "tier": 2,
+    "version": "0.1.0",
+    "licenseUrl": "https://github.com/civiale/iobroker.luxtronik2ws/blob/main/LICENSE",
+    "extIcon": "https://raw.githubusercontent.com/civiale/iobroker.luxtronik2ws/main/admin/luxtronik.png",
+    "logTransporter": false,
+    "compact": false
   },
   "native": {
     "host": "",
@@ -55,7 +71,10 @@
       "_id": "info.connection",
       "type": "state",
       "common": {
-        "name": "Verbindungsstatus",
+        "name": {
+          "en": "Connection status",
+          "de": "Verbindungsstatus"
+        },
         "type": "boolean",
         "role": "indicator.connected",
         "read": true,
