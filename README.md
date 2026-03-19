@@ -52,19 +52,20 @@ Alle Wärmepumpen mit **Luxtronik 2.1 Steuerung** und Firmware **V3.81 oder neue
 
 ---
 
-## ⚠️ Voraussetzungen — Netzwerk & Webserver aktivieren
+## ⚠️ Voraussetzungen — Netzwerk, Webserver & Fernsteuerung aktivieren
 
 > **Wichtig:** Bevor der Adapter verwendet werden kann, muss die Wärmepumpe zwingend am lokalen Netzwerk (LAN) angeschlossen sein und der **Webserver** sowie die **Fernsteuerung** in der Luxtronik-Steuerung aktiviert sein.
 
+---
+
 ### Schritt 1 — LAN-Kabel anschliessen
 
-Die Luxtronik 2.1 Steuerung unterstützt **ausschliesslich Kabelverbindung (LAN)**. WLAN ist nicht unterstützt.
+Die Verbindung zum Netzwerk erfolgt über die linke Buchse an der Unterseite des Bedienteils. Voraussetzung ist, dass im Zuge der elektrischen Anschlussarbeiten ein **geschirmtes Netzwerkkabel (Kategorie 6)** durch das Gerät verlegt worden ist.
 
-1. LAN-Kabel (RJ-45) an die Netzwerkbuchse der Luxtronik-Steuerung anschliessen
-2. Anderes Ende in den Router/Switch einstecken
-3. Maximale Kabellänge: 99 Meter
+- LAN-Kabel (RJ-45, Kat. 6) in die Netzwerkbuchse der Luxtronik-Steuerung stecken
+- Anderes Ende in den Router/Switch einstecken
 
-> Quelle: [Alpha Innotec Anleitung Elektriker](https://www.alpha-innotec.ch/fileadmin/content/product_management/alpha_web/Anleitung_Elektriker_de.pdf)
+> Quelle: [Alpha Innotec Betriebsanleitung Luxtronik (ManualsLib)](https://www.manualslib.de/manual/593845/Alpha-Innotec-Luxtronik.html?page=32)
 
 ---
 
@@ -73,139 +74,147 @@ Die Luxtronik 2.1 Steuerung unterstützt **ausschliesslich Kabelverbindung (LAN)
 Am Bedienfeld der Wärmepumpe:
 
 ```
-SERVICE → Systemsteuerung → Webserver → Aktivieren
+SERVICE → Systemsteuerung → Webserver → Ein
 ```
+
+Über die linke Buchse an der Unterseite des Bedienteils kann eine Verbindung zu einem Computer oder einem Netzwerk hergestellt werden, um den Heizungs- und Wärmepumpenregler von dort aus steuern zu können.
 
 Detaillierte Schritte:
 1. **Dreh-Druck-Knopf** drehen bis `SERVICE` markiert ist → drücken
 2. `Systemsteuerung` anwählen → drücken
 3. `Webserver` anwählen → drücken
-4. Webserver auf **„Ein"** stellen → mit Haken bestätigen
+4. Webserver auf **„Ein"** stellen → mit linkem Haken bestätigen
 
-> Nach der Aktivierung ist die Wärmepumpe unter ihrer lokalen IP-Adresse im Browser erreichbar, z.B.: `http://192.168.1.67`
-
-> Quelle: [Alpha Innotec Betriebsanleitung Luxtronik 2.0/2.1](https://www.alpha-innotec.ch/fileadmin/content/downloads/Lux_Fachhandwerker_de.pdf) — Seite 62
+> Quelle: [Alpha Innotec Betriebsanleitung Luxtronik Seite 32](https://www.manualslib.de/manual/593845/Alpha-Innotec-Luxtronik.html?page=32)
 
 ---
 
-### Schritt 3 — Fernsteuerung aktivieren
+### Schritt 3 — DHCP Client aktivieren & IP-Adresse herausfinden
+
+Wenn Sie **DHCP Client** aktivieren, bezieht der Luxtronik-Regler automatisch eine IP-Adresse von Ihrem Router/Modem.
 
 ```
-SERVICE → Einstellung → System Einstellung → Fernsteuerung → Ja
+SERVICE → Systemsteuerung → DHCP Client → Ein
 ```
 
-Detaillierte Schritte:
-1. **Dreh-Druck-Knopf** drehen bis `SERVICE` markiert ist → drücken
-2. `Einstellung` anwählen → drücken
-3. `System Einstellung` anwählen → drücken
-4. Bis `Fernsteuerung` scrollen → `Ja` wählen → mit Haken bestätigen
+> 💡 **So finden Sie die IP-Adresse Ihrer Wärmepumpe:**
+> Nach Aktivierung des DHCP Clients zeigt die Steuerung die zugewiesene IP-Adresse direkt am Display an:
+> ```
+> SERVICE → Systemsteuerung → IP-Adresse
+> ```
+> Geben Sie im Browser zunächst `http://` und dann die im Bildschirm Ihres Heizungs- und Wärmepumpenreglers unter „IP" erscheinende Nummer ein.
 
-> ⚠️ Laut offizieller Betriebsanleitung: *„Alle Einstellungen, die die Funktion Fernwartung betreffen, dürfen nur durch autorisiertes Servicepersonal vorgenommen werden."*
+**Beispiel wie eine IP-Adresse aussehen kann** (Ihre individuelle Adresse finden Sie wie oben beschrieben am Display):
+```
+http://192.168.x.x
+```
 
-> Quelle: [Alpha Innotec Betriebsanleitung Luxtronik](https://www.manualslib.de/manual/593845/Alpha-Innotec-Luxtronik.html) — Seite 32ff
+> 💡 **Tipp:** Im Router eine **feste DHCP-Reservierung** für die MAC-Adresse der Wärmepumpe einrichten, damit die IP-Adresse immer gleich bleibt.
+
+> Quelle: [Alpha Innotec Installationsanleitung alpha web](https://www.alpha-innotec.ch/fileadmin/content/product_management/alpha_web/Anleitung_Elektriker_de.pdf)
 
 ---
 
-### Schritt 4 — IP-Adresse der Wärmepumpe herausfinden
+### Schritt 4 — Fernsteuerung aktivieren
 
-**Option A — DHCP (empfohlen):**
 ```
-SERVICE → Systemsteuerung → DHCP-Client → Aktivieren
-```
-Die Wärmepumpe bezieht automatisch eine IP-Adresse vom Router.
-Die zugewiesene IP-Adresse ist im Router-Interface unter den verbundenen Geräten sichtbar.
-
-**Option B — Feste IP:**
-```
-SERVICE → Systemsteuerung → IP-Adresse → manuell eingeben
+SERVICE → Systemsteuerung → Fernsteuerung → Ein
 ```
 
-> 💡 **Tipp:** Im Router eine **feste DHCP-Reservierung** für die Wärmepumpe einrichten, damit die IP-Adresse immer gleich bleibt.
+Wird die Option „Fernsteuerung" eingeschaltet, kann der Heizungs- und Wärmepumpenregler über einen Computer oder ein Netzwerk gesteuert werden.
+
+> ⚠️ Alle Einstellungen, die die Funktion „Fernwartung" betreffen, dürfen nur durch autorisiertes Servicepersonal vorgenommen werden.
+
+> Quelle: [Alpha Innotec Betriebsanleitung Luxtronik Seite 33](https://www.manualslib.de/manual/593845/Alpha-Innotec-Luxtronik.html?page=33)
 
 ---
 
 ### Schritt 5 — Verbindung testen
 
-Nach der Aktivierung die Verbindung mit PowerShell testen:
+Nach der Aktivierung die Verbindung mit PowerShell testen (Windows):
 
 ```powershell
-# Ping Test
-ping 192.168.1.67
+# Ping Test (Beispiel-IP — Ihre IP finden Sie am Display unter SERVICE → Systemsteuerung → IP-Adresse)
+ping 192.168.x.x
 
 # Port 8214 Test (WebSocket)
-Test-NetConnection -ComputerName 192.168.1.67 -Port 8214
+Test-NetConnection -ComputerName 192.168.x.x -Port 8214
 ```
 
 Erwartetes Ergebnis: `TcpTestSucceeded : True`
 
 ---
 
-## Test-Tool — WebSocket Tester (webtest.html)
+## Test-Tool — WebSocket Tester (`test/webtest.html`)
 
-Im Ordner `test/` ist eine **webtest.html** enthalten mit der die WebSocket-Verbindung zur Wärmepumpe direkt im Browser getestet werden kann — ohne ioBroker oder Node.js.
+Im Ordner `test/` befindet sich eine **webtest.html** mit der die WebSocket-Verbindung zur Wärmepumpe direkt im Browser getestet werden kann — **ohne ioBroker oder Node.js**.
+
+Dieses Test-Tool wurde entwickelt um das neue `Lux_WS` WebSocket-Protokoll zu analysieren und alle verfügbaren Datenpunkte der Wärmepumpe zu entdecken. Es ist die Grundlage für diesen Adapter.
 
 ### Was kann man mit dem Test-Tool machen?
 
-- ✅ **Verbindung testen** — prüfen ob der WebSocket Port 8214 erreichbar ist
-- ✅ **Login testen** — Passwort-Authentifizierung prüfen
+- ✅ **Verbindung testen** — prüfen ob Port 8214 erreichbar ist und Login funktioniert
 - ✅ **Alle Datenbereiche anzeigen** — Navigation der Wärmepumpe wird automatisch geladen
-- ✅ **Einzelne Bereiche abfragen** — per Klick auf Schaltfläche Daten eines Bereichs anzeigen
+- ✅ **Einzelne Bereiche abfragen** — per Klick Live-Daten eines Bereichs anzeigen
 - ✅ **Live-Werte anzeigen** — Temperaturen, Betriebsstunden, Status in Echtzeit sehen
-- ✅ **IDs prüfen** — die dynamischen Hexadezimal-IDs der Luxtronik Navigationsstruktur einsehen
+- ✅ **Dynamische IDs einsehen** — die Hexadezimal-IDs der Luxtronik Navigationsstruktur prüfen
+- ✅ **Fehlerdiagnose** — Verbindungsprobleme direkt im Log erkennen
 
 ### So verwenden:
 
 1. Datei `test/webtest.html` herunterladen
-2. **Doppelklick** auf die Datei — öffnet sich direkt im Browser (Edge, Chrome)
-   > ⚠️ Die Datei muss als **lokale Datei** (`file://`) geöffnet werden, nicht über einen Webserver — sonst blockiert der Browser die WebSocket-Verbindung (Mixed Content)
-3. IP-Adresse, Port und Passwort eingeben
-4. **„Verbinden"** klicken
+2. **Doppelklick** auf die Datei — öffnet sich direkt im Browser (Edge oder Chrome)
+3. IP-Adresse der Wärmepumpe eingeben (ablesen am Display: `SERVICE → Systemsteuerung → IP-Adresse`)
+4. Port `8214` und Passwort `999999` eingeben
+5. **„🔌 Verbinden"** klicken
+
+> ⚠️ **Wichtig:** Die Datei muss als **lokale Datei** (`file://`) geöffnet werden — nicht über einen Webserver. Sonst blockiert der Browser die WebSocket-Verbindung wegen Mixed Content.
 
 ### Benutzeroberfläche:
 
 ```
-┌─────────────────────────────────────────────────────┐
-│  🔥 Luxtronik WebSocket Tester                      │
-│  ● Verbunden mit 192.168.1.67:8214                  │
-├─────────────────────────────────────────────────────┤
-│  IP: [192.168.1.67] Port: [8214] PW: [999999]       │
-│  [🔌 Verbinden] [✖ Trennen] [🔄 REFRESH] [🗑 Log]  │
-├─────────────────────────────────────────────────────┤
-│  📂 BEREICHE (automatisch geladen)                   │
-│  ┌──────────┐ ┌──────────┐ ┌──────────────────┐    │
-│  │🌡️        │ │📥        │ │📤               │    │
-│  │Tempera-  │ │Eingänge  │ │Ausgänge         │    │
-│  │turen     │ │0x11e82d8 │ │0x130b868        │    │
-│  │0xc724f8  │ └──────────┘ └──────────────────┘    │
-│  └──────────┘                                        │
-│  ┌──────────┐ ┌──────────┐ ┌──────────────────┐    │
-│  │🕐        │ │⚡        │ │🏠               │    │
-│  │Betriebs- │ │Leistungs-│ │Smart Home       │    │
-│  │stunden   │ │aufnahme  │ │Interface        │    │
-│  └──────────┘ └──────────┘ └──────────────────┘    │
-├─────────────────────────────────────────────────────┤
-│  📋 LOG                                              │
-│  [20:57:24] ✅ Verbunden mit Lux_WS Protokoll!      │
-│  [20:57:24] 📥 Navigation geladen — 16 Bereiche     │
-│  [20:57:46] 📤 GET Temperaturen (0xc724f8)          │
-│  [20:57:46] 📥 Empfangen: {"items":[...]}           │
-├─────────────────────────────────────────────────────┤
-│  📊 Temperaturen                                     │
-│  ┌─────────────────┐ ┌─────────────────┐           │
-│  │ Aussentemperatur│ │ Vorlauftemp.    │           │
-│  │   8.5 °C        │ │   35.2 °C       │           │
-│  └─────────────────┘ └─────────────────┘           │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  🔥 Luxtronik WebSocket Tester v2.0                         │
+│  ● Verbunden mit 192.168.x.x:8214                           │
+├─────────────────────────────────────────────────────────────┤
+│  IP: [192.168.x.x] Port: [8214]  PW: [999999]              │
+│  [🔌 Verbinden] [✖ Trennen] [🔄 REFRESH] [🗑 Log leeren]  │
+├─────────────────────────────────────────────────────────────┤
+│  📂 BEREICHE (werden automatisch nach Verbindung geladen)    │
+│  ┌────────────┐ ┌────────────┐ ┌────────────────────┐      │
+│  │ 🌡️         │ │ 📥         │ │ 📤                 │      │
+│  │ Tempera-   │ │ Eingänge   │ │ Ausgänge           │      │
+│  │ turen      │ │ 0x11e82d8  │ │ 0x130b868          │      │
+│  │ 0xc724f8   │ └────────────┘ └────────────────────┘      │
+│  └────────────┘                                              │
+│  ┌────────────┐ ┌────────────┐ ┌────────────────────┐      │
+│  │ 🕐         │ │ ⚡         │ │ 🏠                 │      │
+│  │ Betriebs-  │ │ Leistungs- │ │ Smart Home         │      │
+│  │ stunden    │ │ aufnahme   │ │ Interface          │      │
+│  └────────────┘ └────────────┘ └────────────────────┘      │
+├─────────────────────────────────────────────────────────────┤
+│  📋 LOG                                                      │
+│  [20:57:24] ✅ Verbunden mit Lux_WS Protokoll!              │
+│  [20:57:24] ✅ Navigation geladen — 16 Bereiche verfügbar   │
+│  [20:57:46] 📤 GET Temperaturen (0xc724f8)                  │
+│  [20:57:46] 📥 Empfangen: {"items":[...]}                   │
+├─────────────────────────────────────────────────────────────┤
+│  📊 Temperaturen                                             │
+│  ┌──────────────────────┐  ┌──────────────────────┐        │
+│  │ Aussentemperatur     │  │ Vorlauftemperatur     │        │
+│  │      8.5 °C          │  │      35.2 °C          │        │
+│  └──────────────────────┘  └──────────────────────┘        │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Häufige Fehlermeldungen beim Test:
+### Häufige Fehlermeldungen:
 
 | Fehlermeldung | Ursache | Lösung |
 |---|---|---|
-| `Fehler: [object Event]` | Falsches Protokoll | Datei lokal öffnen (file://) |
-| `Insufficient resources` | Browser blockiert ws:// | Datei lokal öffnen statt über https:// |
-| `Verbindung getrennt` | Webserver nicht aktiv | Webserver in Luxtronik aktivieren |
-| `TcpTestSucceeded: False` | Port geschlossen | Netzwerk prüfen, Kabel kontrollieren |
+| `Fehler: [object Event]` | Webserver nicht aktiv | Webserver in Luxtronik aktivieren |
+| `Insufficient resources` | Browser blockiert `ws://` | Datei lokal öffnen (`file://`) statt über `https://` |
+| `Verbindung getrennt` | Falsches Protokoll / Passwort | Protokoll `Lux_WS` und Passwort prüfen |
+| `TcpTestSucceeded: False` | Port geschlossen | Netzwerk & Kabel prüfen, Webserver aktivieren |
 
 ---
 
@@ -265,7 +274,7 @@ iobroker restart
 
 | Parameter | Standard | Beschreibung |
 |---|---|---|
-| **IP Adresse** | 192.168.1.67 | IP-Adresse der Wärmepumpe im lokalen Netzwerk |
+| **IP Adresse** | — | IP-Adresse der Wärmepumpe (ablesen am Display: `SERVICE → Systemsteuerung → IP-Adresse`) |
 | **Port** | 8214 | WebSocket Port (Standard bei allen Luxtronik 2.1) |
 | **Passwort** | 999999 | Luxtronik Benutzer-Passwort (Standard: 999999) |
 | **Abfrageintervall** | 30s | Wie oft alle Werte abgefragt werden (Sekunden) |
@@ -321,14 +330,6 @@ Zusammen mit dem ioBroker MQTT Adapter können alle Wärmepumpen-Daten an einen 
 
 ---
 
-## Sicherheitshinweise
-
-> ⚠️ Die Wärmepumpe sollte **niemals direkt aus dem Internet erreichbar** sein. Nur im lokalen Netzwerk verwenden — kein Port-Forwarding einrichten!
-
-> 🔒 In Firmware V3.92 wurde CVE-2024-22894 behoben (hardcodiertes Root-SSH-Passwort). Firmware aktuell halten!
-
----
-
 ## Dateistruktur
 
 ```
@@ -346,6 +347,14 @@ Luxtronic-V.3.x/
     └── workflows/
         └── ci.yml           # GitHub Actions CI
 ```
+
+---
+
+## Sicherheitshinweise
+
+> ⚠️ Die Wärmepumpe sollte **niemals direkt aus dem Internet erreichbar** sein. Nur im lokalen Netzwerk verwenden — kein Port-Forwarding einrichten!
+
+> 🔒 In Firmware V3.92 wurde CVE-2024-22894 behoben (hardcodiertes Root-SSH-Passwort). Firmware aktuell halten!
 
 ---
 
