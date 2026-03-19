@@ -110,7 +110,7 @@ Nach der Installation die Instanz in ioBroker Admin konfigurieren:
 
 | Parameter | Standard | Beschreibung |
 |---|---|---|
-| **IP Adresse** | 192.168.1.67 | IP-Adresse der Wärmepumpe im lokalen Netzwerk |
+| **IP Adresse** | 192.168.1.100 | IP-Adresse der Wärmepumpe im lokalen Netzwerk |
 | **Port** | 8214 | WebSocket Port (Standard bei allen Luxtronik 2.1) |
 | **Passwort** | 999999 | Luxtronik Benutzer-Passwort (Standard: 999999) |
 | **Abfrageintervall** | 30s | Wie oft alle Werte abgefragt werden (Sekunden) |
