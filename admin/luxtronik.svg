@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Hintergrund -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a5c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d2137;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="flame" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff4500;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff8c00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd700;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00aaff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Runder Hintergrund -->
+  <rect width="100" height="100" rx="18" ry="18" fill="url(#bg)"/>
+
+  <!-- Wärmepumpe Gehäuse -->
+  <rect x="28" y="32" width="44" height="42" rx="5" ry="5" fill="#1e4d7a" stroke="#2a6aaa" stroke-width="1.5"/>
+
+  <!-- Flamme (Wärme) -->
+  <path d="M50 62 C46 56 44 52 47 47 C48 50 50 51 50 51 C50 51 52 48 53 44 C56 49 56 54 50 62Z" fill="url(#flame)"/>
+
+  <!-- WebSocket Wellen links -->
+  <path d="M20 45 Q17 50 20 55" stroke="url(#wave)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M15 41 Q10 50 15 59" stroke="url(#wave)" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- WebSocket Wellen rechts -->
+  <path d="M80 45 Q83 50 80 55" stroke="url(#wave)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M85 41 Q90 50 85 59" stroke="url(#wave)" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Text "LUX" -->
+  <text x="50" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#00d4ff" letter-spacing="2">LUX</text>
+
+  <!-- Kleiner Verbindungspunkt -->
+  <circle cx="50" cy="35" r="3" fill="#00d4ff" opacity="0.8"/>
+</svg>

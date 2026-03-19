@@ -1,43 +1,151 @@
 {
-  "type": "panel",
+  "type": "tabs",
   "items": {
-    "host": {
-      "type": "text",
-      "label": "IP Adresse der Wärmepumpe",
-      "placeholder": "192.168.1.67",
-      "sm": 6,
-      "validator": "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",
-      "validatorErrorText": "Bitte gültige IP-Adresse eingeben"
+    "tab_connection": {
+      "type": "tab",
+      "label": "Verbindung",
+      "items": {
+        "header_connection": {
+          "type": "header",
+          "text": "Wärmepumpen-Verbindung",
+          "size": 4
+        },
+        "hint_ip": {
+          "type": "staticText",
+          "text": "Die IP-Adresse finden Sie am Display der Wärmepumpe unter: SERVICE → Systemsteuerung → IP-Adresse",
+          "style": {"color": "#888", "fontSize": "12px", "marginBottom": "16px"}
+        },
+        "host": {
+          "type": "text",
+          "label": "IP-Adresse der Wärmepumpe",
+          "placeholder": "z.B. 192.168.1.100",
+          "help": "IP-Adresse am Display ablesen: SERVICE → Systemsteuerung → IP-Adresse",
+          "sm": 12,
+          "md": 6,
+          "validator": "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",
+          "validatorErrorText": "Bitte eine gültige IP-Adresse eingeben (z.B. 192.168.1.100)",
+          "required": true
+        },
+        "port": {
+          "type": "number",
+          "label": "Port (WebSocket)",
+          "placeholder": "8214",
+          "help": "Standard-Port der Luxtronik 2.1: 8214",
+          "min": 1,
+          "max": 65535,
+          "sm": 12,
+          "md": 3
+        },
+        "password": {
+          "type": "text",
+          "label": "Passwort",
+          "placeholder": "999999",
+          "help": "Standard-Passwort: 999999",
+          "sm": 12,
+          "md": 3
+        },
+        "divider1": {
+          "type": "divider"
+        },
+        "header_poll": {
+          "type": "header",
+          "text": "Abfrage-Einstellungen",
+          "size": 4
+        },
+        "pollInterval": {
+          "type": "number",
+          "label": "Abfrageintervall (Sekunden)",
+          "help": "Wie oft alle Werte abgefragt werden. Empfohlen: 30 Sekunden",
+          "min": 10,
+          "max": 3600,
+          "placeholder": "30",
+          "sm": 12,
+          "md": 4
+        },
+        "reconnectInterval": {
+          "type": "number",
+          "label": "Reconnect-Intervall (Sekunden)",
+          "help": "Wartezeit bei Verbindungsabbruch bis zum nächsten Versuch",
+          "min": 10,
+          "max": 600,
+          "placeholder": "60",
+          "sm": 12,
+          "md": 4
+        }
+      }
     },
-    "port": {
-      "type": "number",
-      "label": "Port",
-      "placeholder": "8214",
-      "min": 1,
-      "max": 65535,
-      "sm": 3
-    },
-    "password": {
-      "type": "text",
-      "label": "Passwort",
-      "placeholder": "999999",
-      "sm": 3
-    },
-    "pollInterval": {
-      "type": "number",
-      "label": "Abfrageintervall (Sekunden)",
-      "min": 10,
-      "max": 3600,
-      "placeholder": "30",
-      "sm": 4
-    },
-    "reconnectInterval": {
-      "type": "number",
-      "label": "Reconnect Intervall (Sekunden)",
-      "min": 10,
-      "max": 600,
-      "placeholder": "60",
-      "sm": 4
+    "tab_info": {
+      "type": "tab",
+      "label": "Info & Hilfe",
+      "items": {
+        "header_info": {
+          "type": "header",
+          "text": "Luxtronik 2.1 WebSocket Adapter",
+          "size": 3
+        },
+        "info_text": {
+          "type": "staticText",
+          "text": "Dieser Adapter verbindet ioBroker mit Alpha Innotec / Luxtronik 2.1 Wärmepumpen via WebSocket-Protokoll (Lux_WS). Unterstützt Firmware V3.81 und neuer.",
+          "style": {"marginBottom": "16px"}
+        },
+        "header_requirements": {
+          "type": "header",
+          "text": "Voraussetzungen",
+          "size": 4
+        },
+        "req1": {
+          "type": "staticText",
+          "text": "✅ LAN-Kabel an der Wärmepumpe angeschlossen"
+        },
+        "req2": {
+          "type": "staticText",
+          "text": "✅ Webserver aktiviert: SERVICE → Systemsteuerung → Webserver → Ein"
+        },
+        "req3": {
+          "type": "staticText",
+          "text": "✅ Fernsteuerung aktiviert: SERVICE → Systemsteuerung → Fernsteuerung → Ein"
+        },
+        "req4": {
+          "type": "staticText",
+          "text": "✅ DHCP Client aktiviert: SERVICE → Systemsteuerung → DHCP Client → Ein"
+        },
+        "req5": {
+          "type": "staticText",
+          "text": "✅ IP-Adresse ablesen: SERVICE → Systemsteuerung → IP-Adresse"
+        },
+        "divider2": {
+          "type": "divider"
+        },
+        "header_passwords": {
+          "type": "header",
+          "text": "Standard-Zugangsdaten",
+          "size": 4
+        },
+        "pw_text": {
+          "type": "staticText",
+          "text": "Benutzer-Passwort: 999999 | Service-Passwort: 0000000 | Installateur-Passwort: 1111111"
+        },
+        "divider3": {
+          "type": "divider"
+        },
+        "header_links": {
+          "type": "header",
+          "text": "Links",
+          "size": 4
+        },
+        "link_github": {
+          "type": "staticLink",
+          "href": "https://github.com/civiale/iobroker.luxtronik2ws",
+          "text": "GitHub Repository",
+          "button": true
+        },
+        "link_readme": {
+          "type": "staticLink",
+          "href": "https://github.com/civiale/iobroker.luxtronik2ws/blob/main/README.md",
+          "text": "Dokumentation (README)",
+          "button": true
+        }
+      }
     }
   }
 }
