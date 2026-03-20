@@ -202,12 +202,16 @@ class Luxtronik2WS extends utils.Adapter {
             const unit = item.unit || '';
             const role = this.guessRole(item.name, unit);
 
+            // Typ immer korrekt bestimmen — nie von typeof value abhängig machen
+            const stateType = (typeof value === 'boolean') ? 'boolean' :
+                              (typeof value === 'number') ? 'number' : 'string';
+
             if (!this.createdObjects.has(stateId)) {
-                await this.setObjectNotExistsAsync(stateId, {
+                await this.setObjectAsync(stateId, {
                     type: 'state',
                     common: {
                         name: item.name,
-                        type: typeof value,
+                        type: stateType,
                         role: role,
                         unit: unit,
                         read: true,
@@ -216,14 +220,25 @@ class Luxtronik2WS extends utils.Adapter {
                     native: { luxId: item.id || '' }
                 });
                 this.createdObjects.add(stateId);
+                this.log.debug(`📝 Objekt erstellt: ${stateId} (${stateType})`);
             }
 
-            await this.setStateAsync(stateId, { val: value, ack: true });
+            // Typ-Konvertierung sicherstellen bevor State gesetzt wird
+            let safeValue = value;
+            if (stateType === 'number' && typeof value !== 'number') {
+                safeValue = parseFloat(value) || 0;
+            } else if (stateType === 'boolean' && typeof value !== 'boolean') {
+                safeValue = value === 'true' || value === '1' || value === 1;
+            } else if (stateType === 'string' && typeof value !== 'string') {
+                safeValue = String(value);
+            }
+
+            await this.setStateAsync(stateId, { val: safeValue, ack: true });
 
             // An Loxone via MQTT senden
-            this.publishMqtt(sectionName, item.name, value, unit);
+            this.publishMqtt(sectionName, item.name, safeValue, unit);
 
-            this.log.debug(`📊 ${stateId} = ${value} ${unit}`);
+            this.log.debug(`📊 ${stateId} = ${safeValue} ${unit}`);
         }
     }
 
