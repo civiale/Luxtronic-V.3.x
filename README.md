@@ -2,9 +2,9 @@
 
 ## Alpha Innotec / Luxtronik 2.1 WebSocket Adapter
 
-[![GitHub](https://img.shields.io/badge/GitHub-civiale/Luxtronic--V.3.x-blue)](https://github.com/civiale/Luxtronic-V.3.x)
+[![GitHub](https://img.shields.io/badge/GitHub-civiale%2FioBroker.luxtronik2ws-blue)](https://github.com/civiale/iobroker.luxtronik2ws)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Firmware](https://img.shields.io/badge/Firmware-v3.81%2B-green)](https://github.com/civiale/Luxtronic-V.3.x)
+[![Firmware](https://img.shields.io/badge/Firmware-v3.81%2B-green)](https://github.com/civiale/iobroker.luxtronik2ws)
 [![ioBroker](https://img.shields.io/badge/ioBroker-Adapter-orange)](https://www.iobroker.net)
 
 ---
@@ -33,7 +33,7 @@ Ab Firmware **V3.81** hat Alpha Innotec das Kommunikationsprotokoll grundlegend 
 
 ### Die Lösung: ioBroker.luxtronik2ws
 
-Dieser neue Adapter wurde von Grund auf neu entwickelt und unterstützt das **neue WebSocket-Protokoll** der Luxtronik 2.1 Steuerung ab Firmware V3.81. Er wurde speziell mit Firmware **V3.92.2** getestet und funktioniert zuverlässig.
+Dieser neue Adapter wurde von Grund auf neu entwickelt und unterstützt das **neue WebSocket-Protokoll** der Luxtronik 2.1 Steuerung ab Firmware V3.81. Er wurde mit Firmware **V3.92.2** entwickelt und getestet.
 
 ---
 
@@ -43,12 +43,23 @@ Alle Wärmepumpen mit **Luxtronik 2.1 Steuerung** und Firmware **V3.81 oder neue
 
 - Alpha Innotec (alle Modelle mit Luxtronik 2.1)
 - Novelan (baugleich mit Alpha Innotec)
-- Siemens Wärmepumpen mit Luxtronik 2.1
-- Alle OEM-Varianten der Luxtronik 2.1 Steuerung
+- Weitere OEM-Varianten der Luxtronik 2.1 Steuerung
 
-**Getestete Firmware:** V3.81, V3.90, V3.91, V3.92.2
+**Getestet mit:** Firmware **V3.92.2** (Alpha Innotec)
+
+Der Adapter liest die Struktur der Wärmepumpe bei jedem Start dynamisch aus. Er sollte deshalb auf allen Firmware-Versionen ab V3.81 funktionieren — bestätigt ist bislang aber nur V3.92.2. Rückmeldungen zu anderen Versionen sind willkommen, gern als [Issue](https://github.com/civiale/iobroker.luxtronik2ws/issues).
 
 > ⚠️ **Für ältere Geräte mit Firmware < V3.81** bitte den ursprünglichen Adapter von [UncleSamSwiss](https://github.com/UncleSamSwiss/ioBroker.luxtronik2) verwenden.
+
+---
+
+## Voraussetzungen (Software)
+
+| Komponente | Mindestversion |
+|---|---|
+| ioBroker js-controller | **≥ 4.0.0** |
+| ioBroker Admin | **≥ 6.0.0** |
+| Node.js | **≥ 18** |
 
 ---
 
@@ -143,6 +154,12 @@ Test-NetConnection -ComputerName 192.168.x.x -Port 8214
 
 Erwartetes Ergebnis: `TcpTestSucceeded : True`
 
+Unter Linux oder macOS geht dasselbe mit:
+
+```bash
+nc -vz 192.168.x.x 8214
+```
+
 ---
 
 ## Test-Tool — WebSocket Tester (`test/webtest.html`)
@@ -168,7 +185,7 @@ Dieses Test-Tool wurde entwickelt um das neue `Lux_WS` WebSocket-Protokoll zu an
 4. Port `8214` und Passwort `999999` eingeben
 5. **„🔌 Verbinden"** klicken
 
-> ⚠️ **Wichtig:** Die Datei muss als **lokale Datei** (`file://`) geöffnet werden — nicht über einen Webserver. Sonst blockiert der Browser die WebSocket-Verbindung wegen Mixed Content.
+> ⚠️ **Wichtig:** Die Datei muss als **lokale Datei** (`file://`) geöffnet werden — nicht über einen Webserver. Von einer `https://`-Seite aus blockiert der Browser die unverschlüsselte `ws://`-Verbindung als Mixed Content.
 
 ### Benutzeroberfläche:
 
@@ -207,6 +224,8 @@ Dieses Test-Tool wurde entwickelt um das neue `Lux_WS` WebSocket-Protokoll zu an
 └─────────────────────────────────────────────────────────────┘
 ```
 
+> Die Hexadezimal-IDs im Bild sind Beispiele aus einer konkreten Anlage. Bei Ihnen sehen sie anders aus — sie werden von der Steuerung dynamisch vergeben.
+
 ### Häufige Fehlermeldungen:
 
 | Fehlermeldung | Ursache | Lösung |
@@ -226,9 +245,10 @@ Dieses Test-Tool wurde entwickelt um das neue `Lux_WS` WebSocket-Protokoll zu an
 - ✅ Automatisches Polling aller Werte (konfigurierbar, Standard 30 Sekunden)
 - ✅ Automatischer Reconnect bei Verbindungsabbruch
 - ✅ Korrekte Einheiten (°C, kWh, kW, h, %)
+- ✅ Datenbereiche einzeln zu- und abschaltbar
+- ✅ **Eingebauter MQTT-Client** für die Loxone-Integration — kein zusätzlicher MQTT-Adapter nötig
 - ✅ Konfigurierbar via ioBroker Admin UI
 - ✅ Verbindungsstatus-Anzeige in ioBroker
-- ✅ Kompatibel mit ioBroker MQTT Adapter für Loxone Integration
 
 ---
 
@@ -240,15 +260,27 @@ Dieses Test-Tool wurde entwickelt um das neue `Lux_WS` WebSocket-Protokoll zu an
 2. Klick auf das **GitHub-Symbol** (Eigene URL)
 3. URL eingeben:
    ```
-   [(https://github.com/civiale/iobroker.luxtronik2ws)
+   https://github.com/civiale/iobroker.luxtronik2ws
    ```
 4. **Installieren** klicken
 5. Instanz anlegen und konfigurieren
 
-### Option 2 — Manuell via Docker
+### Option 2 — via Kommandozeile
 
 ```bash
-# In den ioBroker Container einloggen
+iobroker url "https://github.com/civiale/iobroker.luxtronik2ws"
+```
+
+In einer Docker-Installation davor in den Container wechseln — **Containername anpassen**, er lautet je nach Installation `iobroker`, `buanet-iobroker` oder ähnlich:
+
+```bash
+docker exec -it iobroker bash
+```
+
+### Option 3 — Manuell
+
+```bash
+# In den ioBroker Container einloggen (Containername anpassen)
 docker exec -it iobroker bash
 
 # Adapter Verzeichnis erstellen
@@ -264,31 +296,67 @@ npm install
 cd /opt/iobroker
 iobroker add luxtronik2ws
 
-# ioBroker neu starten
-iobroker restart
+# Nur die neue Instanz starten (iobroker restart startet alles neu)
+iobroker start luxtronik2ws.0
 ```
 
 ---
 
 ## Konfiguration
 
-| Parameter | Standard | Beschreibung |
+Die Einstellungen sind im Admin auf vier Reiter verteilt.
+
+### 🔌 Verbindung
+
+| Parameter | Feld | Standard | Beschreibung |
+|---|---|---|---|
+| **IP Adresse** | `host` | — | IP-Adresse der Wärmepumpe (ablesen am Display: `SERVICE → Systemsteuerung → IP-Adresse`) |
+| **Port** | `port` | `8214` | WebSocket Port (Standard bei allen Luxtronik 2.1) |
+| **Passwort** | `password` | `999999` | Luxtronik Benutzer-Passwort |
+| **Abfrageintervall** | `pollInterval` | `30` | Wie oft alle Werte abgefragt werden (Sekunden) |
+| **Reconnect Intervall** | `reconnectInterval` | `60` | Wartezeit bei Verbindungsabbruch (Sekunden) |
+
+### 🏠 Loxone Integration
+
+| Parameter | Feld | Standard | Beschreibung |
+|---|---|---|---|
+| **Loxone Integration** | `loxoneEnabled` | **aus** | Aktiviert den eingebauten MQTT-Client |
+| **MQTT Broker** | `loxoneMqttHost` | — | Adresse des MQTT-Brokers |
+| **MQTT Port** | `loxoneMqttPort` | `1883` | Port des Brokers |
+| **Benutzer** | `loxoneMqttUser` | — | optional, falls der Broker Anmeldung verlangt |
+| **Passwort** | `loxoneMqttPassword` | — | optional |
+| **Topic-Basis** | `loxoneMqttTopic` | `waermepumpe` | Präfix aller veröffentlichten Topics |
+
+### 📊 Datenpunkte
+
+Jeder Bereich der Wärmepumpe lässt sich einzeln zu- oder abschalten. Abgeschaltete Bereiche werden nicht abgefragt und erzeugen keine States.
+
+| Bereich | Feld | Standard |
 |---|---|---|
-| **IP Adresse** | — | IP-Adresse der Wärmepumpe (ablesen am Display: `SERVICE → Systemsteuerung → IP-Adresse`) |
-| **Port** | 8214 | WebSocket Port (Standard bei allen Luxtronik 2.1) |
-| **Passwort** | 999999 | Luxtronik Benutzer-Passwort (Standard: 999999) |
-| **Abfrageintervall** | 30s | Wie oft alle Werte abgefragt werden (Sekunden) |
-| **Reconnect Intervall** | 60s | Wartezeit bei Verbindungsabbruch (Sekunden) |
+| Temperaturen | `fetchTemperaturen` | **ein** |
+| Eingänge | `fetchEingaenge` | **ein** |
+| Ausgänge | `fetchAusgaenge` | **ein** |
+| Betriebsstunden | `fetchBetriebsstunden` | **ein** |
+| Anlagenstatus | `fetchAnlagenstatus` | **ein** |
+| Energiemonitor | `fetchEnergiemonitor` | **ein** |
+| Ablaufzeiten | `fetchAblaufzeiten` | **aus** |
+| Fehlerspeicher | `fetchFehlerspeicher` | **aus** |
+| Smart Home Interface | `fetchSHI` | **aus** |
+
+> 💡 Die letzten drei Bereiche sind ab Werk **deaktiviert**. Wer Ablaufzeiten, Fehlerspeicher oder das Smart Home Interface braucht, muss sie hier zuerst einschalten.
+
+### ℹ️ Info & Hilfe
+
+Reiter mit Kurzhilfe und Verweisen auf diese Dokumentation.
 
 ---
 
 ## Datenpunkte
 
-Der Adapter erstellt **automatisch alle verfügbaren Datenpunkte** basierend auf der Navigation der Wärmepumpe.
+Der Adapter erstellt **automatisch alle verfügbaren Datenpunkte** basierend auf der Navigation der Wärmepumpe. Welche das genau sind und wie sie heissen, hängt von Modell und Firmware ab — die folgende Tabelle ist deshalb eine **Auswahl typischer Beispiele**, keine feste Liste.
 
-| Pfad | Beschreibung | Einheit |
+| Pfad (Beispiel) | Beschreibung | Einheit |
 |---|---|---|
-| `info.connection` | Verbindungsstatus | boolean |
 | `temperaturen.aussentemperatur` | Aussentemperatur | °C |
 | `temperaturen.vorlauftemperatur` | Vorlauftemperatur Heizkreis | °C |
 | `temperaturen.ruecklauftemperatur` | Rücklauftemperatur Heizkreis | °C |
@@ -297,23 +365,45 @@ Der Adapter erstellt **automatisch alle verfügbaren Datenpunkte** basierend auf
 | `temperaturen.heissgas` | Heissgastemperatur | °C |
 | `betriebsstunden.verdichter` | Betriebsstunden Verdichter | h |
 | `betriebsstunden.heizung` | Betriebsstunden Heizung | h |
-| `anlagenstatus.betriebsstatus` | Aktueller Betriebsstatus | - |
+| `anlagenstatus.betriebsstatus` | Aktueller Betriebsstatus | — |
 | `energiemonitor.waermemenge` | Erzeugte Wärmemenge gesamt | kWh |
 | `energiemonitor.leistungsaufnahme` | Aktuelle Leistungsaufnahme | kW |
+
+Zusätzlich legt der Adapter `info.connection` an (Typ `boolean`) — daran lässt sich der Verbindungsstatus in Skripten und Visualisierungen auswerten.
+
+Welche Datenpunkte Ihre Anlage tatsächlich liefert, sehen Sie am schnellsten mit dem [Test-Tool](#test-tool--websocket-tester-testwebtesthtml) oder nach der Installation im Admin unter *Objekte*.
 
 ---
 
 ## Integration mit Loxone
 
-Zusammen mit dem ioBroker MQTT Adapter können alle Wärmepumpen-Daten an einen **Loxone Miniserver** übertragen werden.
+Der Adapter bringt einen **eigenen MQTT-Client** mit. Ein zusätzlicher ioBroker-MQTT-Adapter zum Veröffentlichen der States ist **nicht** nötig.
 
-1. ioBroker **MQTT Adapter** installieren (Server/Broker Modus, Port 1883)
-2. MQTT Adapter: alle `luxtronik2ws.*` States publizieren
-3. In **Loxone Config**: MQTT Client hinzufügen → Broker IP = IP des ioBroker Servers, Port 1883
-4. Virtuelle Eingänge anlegen, z.B. Topic:
-   ```
-   luxtronik2ws/0/temperaturen/aussentemperatur
-   ```
+Was Sie brauchen, ist ein **MQTT-Broker** im Netzwerk. Möglich sind zum Beispiel Mosquitto, der ioBroker-MQTT-Adapter im Server-/Broker-Modus oder ein Broker auf der Loxone-Seite.
+
+### Einrichtung
+
+1. **Broker bereitstellen** (falls noch keiner läuft), Standardport `1883`
+2. Im Adapter den Reiter **🏠 Loxone Integration** öffnen und aktivieren:
+   - **MQTT Broker** — Adresse des Brokers
+   - **MQTT Port** — `1883`
+   - **Benutzer / Passwort** — nur falls der Broker es verlangt
+   - **Topic-Basis** — Standard `waermepumpe`
+3. Instanz speichern, der Adapter verbindet sich und veröffentlicht die Werte
+4. In **Loxone Config**: MQTT Client hinzufügen → Broker-IP und Port `1883` eintragen
+5. Virtuelle Eingänge auf die gewünschten Topics anlegen
+
+### Topics
+
+Die Topics setzen sich aus der Topic-Basis, dem Bereichsnamen und dem Namen des Datenpunkts zusammen:
+
+```
+waermepumpe/<Bereich>/<Datenpunkt>
+```
+
+> 💡 Die genaue Schreibweise der Bereichs- und Datenpunktnamen richtet sich nach dem, was Ihre Wärmepumpe meldet. Am schnellsten sehen Sie die tatsächlichen Topics, indem Sie sich einmal mit einem MQTT-Client (z. B. MQTT Explorer) auf den Broker verbinden und `waermepumpe/#` abonnieren. Diese Topics tragen Sie dann in Loxone ein.
+
+Die Werte werden als **reine Zahlen** veröffentlicht, ohne angehängte Einheit — damit können Loxones virtuelle Eingänge direkt rechnen (siehe Changelog 0.1.1).
 
 ---
 
@@ -333,14 +423,17 @@ Zusammen mit dem ioBroker MQTT Adapter können alle Wärmepumpen-Daten an einen 
 ## Dateistruktur
 
 ```
-Luxtronic-V.3.x/
+iobroker.luxtronik2ws/
 ├── main.js                  # Hauptprogramm (ioBroker Adapter)
 ├── package.json             # Node.js Dependencies
 ├── io-package.json          # ioBroker Metadaten
 ├── LICENSE                  # MIT Lizenz
 ├── README.md                # Diese Dokumentation
+├── .gitignore
 ├── admin/
-│   └── jsonConfig.json      # Konfigurationsseite in ioBroker Admin
+│   ├── jsonConfig.json      # Konfigurationsseite in ioBroker Admin
+│   ├── luxtronik.png
+│   └── luxtronik.svg
 ├── test/
 │   └── webtest.html         # WebSocket Test-Tool für den Browser
 └── .github/
@@ -354,11 +447,19 @@ Luxtronic-V.3.x/
 
 > ⚠️ Die Wärmepumpe sollte **niemals direkt aus dem Internet erreichbar** sein. Nur im lokalen Netzwerk verwenden — kein Port-Forwarding einrichten!
 
-> 🔒 In Firmware V3.92 wurde CVE-2024-22894 behoben (hardcodiertes Root-SSH-Passwort). Firmware aktuell halten!
+> 🔒 **CVE-2024-22894** betrifft die Passwort-Verschlüsselung in der `shadow`-Datei der Steuerung (CWE-326, *Inadequate Encryption Strength*, CVSS 6.8 — Ausnutzung erfordert physischen Zugriff auf das Gerät).
+> Behoben ist sie ab Firmware **V3.89.0** — in den anderen Firmware-Linien ab **V2.88.3** bzw. **V4.81.3**. Betroffen sind Alpha Innotec und Novelan Wärmepumpen mit Firmware vor 2.88.3, 3.0.0–3.88.x und 4.0.0–4.81.x.
+> Quelle: [NVD — CVE-2024-22894](https://nvd.nist.gov/vuln/detail/CVE-2024-22894)
 
 ---
 
 ## Changelog
+
+### 0.1.2
+- **Fix:** Werte werden gegen den deklarierten State-Typ konvertiert. Zuvor verglich der Konvertierungsblock den ermittelten Typ mit sich selbst, wodurch die Bedingungen nie zutrafen. Da ein Objekt nur beim ersten Auftreten angelegt wird, fror sein Typ auf dem ersten gesehenen Wert ein — lieferte die Steuerung beim Verbindungsaufbau Text, blieb der Datenpunkt dauerhaft `string` und jeder spätere Zahlenwert wurde vom js-controller abgewiesen (betraf z. B. `eingaenge.hd` und `ausgaenge.hup`).
+
+### 0.1.1
+- **Fix:** MQTT sendet reine Zahlenwerte an Loxone, ohne Einheit als String
 
 ### 0.1.0 (2026-03)
 - Erstveröffentlichung
@@ -367,6 +468,20 @@ Luxtronic-V.3.x/
 - Automatisches Polling (konfigurierbar)
 - Automatischer Reconnect bei Verbindungsabbruch
 - Getestet mit Alpha Innotec Firmware V3.92.2
+
+---
+
+## Fehlerbehebung
+
+| Symptom | Mögliche Ursache | Prüfen |
+|---|---|---|
+| Instanz bleibt rot | Webserver oder Fernsteuerung nicht aktiv | Schritte 2 und 4 der Voraussetzungen |
+| Verbindung wird sofort getrennt | Falsches Passwort | Standard ist `999999` |
+| Keine States werden angelegt | Alle Datenbereiche abgeschaltet | Reiter *📊 Datenpunkte* |
+| Ein Bereich fehlt komplett | Bereich ab Werk deaktiviert | `fetchAblaufzeiten`, `fetchFehlerspeicher`, `fetchSHI` |
+| Keine Daten in Loxone | Loxone-Integration nicht aktiviert | Reiter *🏠 Loxone Integration*, `loxoneEnabled` |
+| Topics in Loxone leer | Topic-Schreibweise abweichend | Mit MQTT Explorer `waermepumpe/#` abonnieren |
+| Port 8214 nicht erreichbar | Netzwerk oder Webserver | `Test-NetConnection` bzw. `nc -vz` aus Schritt 5 |
 
 ---
 
