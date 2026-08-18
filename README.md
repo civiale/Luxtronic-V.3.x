@@ -240,7 +240,7 @@ Dieses Test-Tool wurde entwickelt um das neue `Lux_WS` WebSocket-Protokoll zu an
 2. Klick auf das **GitHub-Symbol** (Eigene URL)
 3. URL eingeben:
    ```
-   https://github.com/alessandrocivi/Luxtronic-V.3.x
+   [https://github.com/civiale/Luxtronic-V.3.x](https://github.com/civiale/iobroker.luxtronik2ws)
    ```
 4. **Installieren** klicken
 5. Instanz anlegen und konfigurieren
