@@ -19,6 +19,7 @@ class Luxtronik2WS extends utils.Adapter {
         this.isConnected = false;
         this.isReady = false;
         this.createdObjects = new Set();
+        this.stateTypes = new Map();
 
         // Mapping: Bereichsname → Config-Flag
         this.sectionMapping = {
@@ -220,16 +221,18 @@ class Luxtronik2WS extends utils.Adapter {
                     native: { luxId: item.id || '' }
                 });
                 this.createdObjects.add(stateId);
+                this.stateTypes.set(stateId, stateType);
                 this.log.debug(`📝 Objekt erstellt: ${stateId} (${stateType})`);
             }
 
             // Typ-Konvertierung sicherstellen bevor State gesetzt wird
+            const declaredType = this.stateTypes.get(stateId) || stateType;
             let safeValue = value;
-            if (stateType === 'number' && typeof value !== 'number') {
+            if (declaredType === 'number' && typeof value !== 'number') {
                 safeValue = parseFloat(value) || 0;
-            } else if (stateType === 'boolean' && typeof value !== 'boolean') {
+            } else if (declaredType === 'boolean' && typeof value !== 'boolean') {
                 safeValue = value === 'true' || value === '1' || value === 1;
-            } else if (stateType === 'string' && typeof value !== 'string') {
+            } else if (declaredType === 'string' && typeof value !== 'string') {
                 safeValue = String(value);
             }
 
