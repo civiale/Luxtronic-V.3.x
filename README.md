@@ -455,10 +455,10 @@ iobroker.luxtronik2ws/
 
 ## Changelog
 
-### 0.1.2
+### 0.1.2 (2026-08)
 - **Fix:** Werte werden gegen den deklarierten State-Typ konvertiert. Zuvor verglich der Konvertierungsblock den ermittelten Typ mit sich selbst, wodurch die Bedingungen nie zutrafen. Da ein Objekt nur beim ersten Auftreten angelegt wird, fror sein Typ auf dem ersten gesehenen Wert ein — lieferte die Steuerung beim Verbindungsaufbau Text, blieb der Datenpunkt dauerhaft `string` und jeder spätere Zahlenwert wurde vom js-controller abgewiesen (betraf z. B. `eingaenge.hd` und `ausgaenge.hup`).
 
-### 0.1.1
+### 0.1.1 (2026-08)
 - **Fix:** MQTT sendet reine Zahlenwerte an Loxone, ohne Einheit als String
 
 ### 0.1.0 (2026-03)
